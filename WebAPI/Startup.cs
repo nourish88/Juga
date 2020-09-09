@@ -1,3 +1,6 @@
+using Framework.DependencyResolvers;
+using Framework.Extensions;
+using Framework.Utilities.IoC;
 using Framework.Utilities.Security.Encryption;
 using Framework.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,8 +48,11 @@ options.TokenValidationParameters=new TokenValidationParameters
 
 };
             });
-        }
 
+            //tüm resolve iþlemlerini merkezi yöneten bir yapý
+            services.AddDependencyResolvers(new IFrameWorkModule[] {new FrameWorkModule()});
+        }
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

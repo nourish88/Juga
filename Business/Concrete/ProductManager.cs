@@ -2,8 +2,13 @@
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Framework.Aspects.Autofac.Caching;
+using Framework.Aspects.Autofac.Transcation;
+using Framework.Aspects.Autofac.Validation;
+using Framework.CrossCuttingConcerns.Validation.FluentValidation;
 using Framework.Utilities.Results;
 
 namespace Business.Concrete
@@ -21,14 +26,15 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Product>> (_productDal.GetList().ToList());
         }
-
+        [CacheAspect(duration:1)]// süre vermezsek 60 olarak set etmiştik.
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetList(p=>p.CategoryId==categoryId).ToList());
         }
-
+        [ValidationAspect(typeof(ProductValidator),Priority = 1)]
         public IResult Add(Product product)
         {
+            //ValidationTool.Validate(new ProductValidator(), product);
             _productDal.Add(product);
            return new SuccessResult(Messages.ProductAdded); 
         }
@@ -49,5 +55,12 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
         }
-    }
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Product product)
+        {
+            _productDal.Update(product);
+            _productDal.Add(product);
+            return new SuccessResult();
+        }
+   }
 }

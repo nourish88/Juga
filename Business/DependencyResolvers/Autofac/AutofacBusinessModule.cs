@@ -1,10 +1,13 @@
 ﻿using System.Reflection;
 using Autofac;
+using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
+using Castle.DynamicProxy;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.EntityFramework.Contexts;
+using Framework.Utilities.Interceptors.Autofac;
 using Framework.Utilities.Security.JWT;
 using Module = Autofac.Module;
 
@@ -34,10 +37,18 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
 
-            var dataAccess = Assembly.GetExecutingAssembly();
-            builder.RegisterAssemblyTypes(dataAccess)
-                .Where(t => t.Name.EndsWith("Service"))
-                .AsImplementedInterfaces();
+            //var dataAccess = Assembly.GetExecutingAssembly();
+            //builder.RegisterAssemblyTypes(dataAccess)
+            //    .Where(t => t.Name.EndsWith("Service"))
+            //    .AsImplementedInterfaces();
+            //autofac dynamic proxy
+            //Interceptor çalıştırır.
+            var assembly = Assembly.GetExecutingAssembly();
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces().EnableInterfaceInterceptors(new ProxyGenerationOptions
+            {
+                Selector =  new AspectInterceptorSelector()
+            }).SingleInstance();
+
         }
     }
 }
