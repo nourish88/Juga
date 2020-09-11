@@ -65,7 +65,7 @@ options.TokenValidationParameters=new TokenValidationParameters
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.ConfigureCustomExceptionMiddleware();// kendi yazdýðýmýz middle ware
             app.UseAuthentication();
             app.UseAuthorization();
            

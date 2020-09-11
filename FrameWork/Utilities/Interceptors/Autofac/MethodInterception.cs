@@ -15,7 +15,7 @@ namespace Framework.Utilities.Interceptors.Autofac
         {
 
         }
-        protected virtual void OnException(IInvocation invocation)
+        protected virtual void OnException(IInvocation invocation,Exception e)
         {
 
         }
@@ -36,7 +36,7 @@ namespace Framework.Utilities.Interceptors.Autofac
             catch (Exception e)
             {
                 isSuccess = false;
-                OnException(invocation);
+                OnException(invocation, e);
                 throw;
             }
             finally

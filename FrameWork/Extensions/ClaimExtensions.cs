@@ -1,13 +1,11 @@
-﻿using System.Collections;
+﻿using Microsoft.IdentityModel.JsonWebTokens;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Framework.Extensions
 {
-   public static class ClaimExtensions
+    public static class ClaimExtensions
     {
         public static void AddEmail(this ICollection<Claim> claims, string email)
         {

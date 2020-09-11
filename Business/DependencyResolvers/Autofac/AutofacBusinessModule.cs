@@ -8,6 +8,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.EntityFramework.Contexts;
 using Framework.Utilities.Interceptors.Autofac;
+using Framework.Utilities.Mappings;
 using Framework.Utilities.Security.JWT;
 using Module = Autofac.Module;
 
@@ -21,6 +22,7 @@ namespace Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<NorthwindContext>();
+            builder.RegisterType<AutoMapperHelper>();
             //repository nin resolvunu framework te servisleri Business ta resolve edebiliriz.
             builder.RegisterType<ProductManager>().As<IProductService>();
             builder.RegisterType<EfProductDal>().As <IProductDal> ();

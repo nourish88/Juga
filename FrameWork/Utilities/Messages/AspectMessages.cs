@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Framework.Utilities.Messages
+namespace Core.Utilities.Messages
 {
-   public class AspectMessages
-   {
-       public static string WrongValidationType = "Yanlış sınıf gönderdiniz";
-   }
+    public static class AspectMessages
+    {
+        public static string WrongValidationType = "Wrong Validation Type";
+        public static string WrongLoggerType = "Wrong Logger Type";
+    }
 }
